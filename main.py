@@ -2,7 +2,7 @@ import math
 import sys
 import pygame
 
-G = 100
+G = 10
 
 pygame.init()
 
@@ -36,13 +36,15 @@ class Planet:
         self.ax = 0
         self.ay = 0
 
-    def draw(self, scr):
-        pygame.draw.circle(scr, (255, 255, 255), (self.x, height-self.y), self.radius)
+    def draw(self, scr, translation_x, translation_y):
+        pygame.draw.circle(scr, (255, 255, 255), (self.x + translation_x, height - self.y - translation_y), self.radius)
 
 
-# planets = [Planet(501, 400, 100, -0.1, 0), Planet(500, 450, 1, 4, 0), Planet(499, 500, 1, 3, 0),
-#           Planet(502, 600, 1, 2, 0)]
-planets = [Planet(700, 400, 10, -2, -2), Planet(600, 401, 10, -2, 2), Planet(650, 200, 10, 2, 0)]
+planets = [Planet(501, 400, 100, 0, 0), Planet(500, 450, 1, 4, 0), Planet(499, 500, 1, 3, 0),
+           Planet(502, 600, 1, 2, 0)]
+# planets = [Planet(700, 400, 100, -2, -2), Planet(600, 401, 100, -2, 2), Planet(650, 200, 100, 2, 0)]
+
+translation_x, translation_y = 0, 0
 
 while True:
     screen.fill((0, 0, 0))
@@ -54,16 +56,16 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 for planet in planets:
-                    planet.x += 100
+                    translation_x += 25
             if event.key == pygame.K_RIGHT:
                 for planet in planets:
-                    planet.x -= 100
+                    translation_x -= 25
             if event.key == pygame.K_DOWN:
                 for planet in planets:
-                    planet.y += 100
+                    translation_y += 25
             if event.key == pygame.K_UP:
                 for planet in planets:
-                    planet.y -= 100
+                    translation_y -= 25
 
     for planet1 in planets:
         for planet2 in planets:
@@ -85,7 +87,7 @@ while True:
 
     for planet1 in planets:
         planet1.update()
-        planet1.draw(screen)
+        planet1.draw(screen, translation_x, translation_y)
 
     pygame.display.flip()
     fpsClock.tick(fps)
